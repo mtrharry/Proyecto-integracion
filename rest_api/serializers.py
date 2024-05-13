@@ -1,9 +1,23 @@
 from rest_framework import serializers
-from core.models import Producto
+from core.models import Producto, tipoProducto, stockProducto
 
-class ProductoSerializer(serializers.ModelSerializer):
+class TipoProductoSerializer(serializers.ModelSerializer):
     
     class Meta:
+        model = tipoProducto
+        fields = 'idTipoProducto','nombreTipoProducto', 'descripcionTipoProducto'
+
+
+
+class ProductoSerializer(serializers.ModelSerializer):
+    nombreTipoProducto = serializers.CharField(source='idTipoProducto.nombreTipoProducto', read_only=True)
+    descripcionTipoProducto = serializers.CharField(source='idTipoProducto.descripcionTipoProducto', read_only=True)
+    class Meta:
         model = Producto
-        fields = ['idProducto', 'nombreProducto', 'precioProducto', 'stockProducto']
-       
+        fields = 'idProducto','idTipoProducto','nombreTipoProducto','descripcionTipoProducto','stockProducto'
+    
+class stockProductoSerializer(serializers.ModelSerializer):
+        
+        class Meta:
+            model = stockProducto
+            fields = 'idStockProducto','idProducto','stockProducto'
