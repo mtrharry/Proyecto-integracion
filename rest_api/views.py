@@ -44,7 +44,7 @@ def obtener_tipoproducto(request, id):
 @api_view(['GET'])
 def lista_stock(request):
     if request.method == 'GET':
-        stock = stockProducto.objects.all().order_by('idStockProducto')
+        stock = stockProducto.objects.all()
         serializer = stockProductoSerializer(stock, many=True)
         return Response(serializer.data)
     
