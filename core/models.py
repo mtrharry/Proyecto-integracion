@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -25,4 +27,10 @@ class stockProducto(models.Model):
     
     def __str__(self):
         return str(self.cantidad)
+
+@receiver(post_save, sender=stockProducto)
+def actualizar_stock_producto(sender, instance, **kwargs):
+    producto = instance.idProducto
+    producto.cantidadadstock = instance
+    producto.save()
 

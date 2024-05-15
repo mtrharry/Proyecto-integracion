@@ -86,6 +86,17 @@ def crear_producto(request):
 def crear_stock(request):
     datos_stock = request.data
     
+    # Verificar si ya existe un stock asociado al producto
+    id_producto = datos_stock.get('idProducto')
+    if id_producto is not None:
+        try:
+            stock_existente = stockProducto.objects.filter(idProducto=id_producto)
+            if stock_existente.exists():
+                # Si hay registros de stock asociados, devolver un mensaje de error
+                return Response({'message': 'Ya existe un stock asociado a este producto. Utiliza un método PUT para actualizar el stock.'}, status=status.HTTP_400_BAD_REQUEST)
+        except stockProducto.DoesNotExist:
+            pass  # Si no hay un stock existente, continuar con la creación
+    
     serializer = stockProductoSerializer(data=datos_stock)
 
     if serializer.is_valid():
@@ -93,6 +104,50 @@ def crear_stock(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PUT'])
+def actualizar_producto(request, id):
+    try:
+        producto = Producto.objects.get(idProducto=id)
+    except Producto.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND, data={'message': 'Producto no encontrado'})
+    
+    if request.method == 'PUT':
+        serializer = ProductoSerializer(producto, data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            # Actualizar el stock si la cantidad de stock se proporciona en la solicitud
+            cantidad_nueva = request.data.get('cantidadadstock')
+            if cantidad_nueva is not None:
+                stock_producto = producto.cantidadadstock
+                if stock_producto:
+                    stock_producto.cantidad = cantidad_nueva
+                    stock_producto.save()
+                else:
+                    # Si no hay un stock existente, crear uno nuevo
+                    stock_producto = stockProducto.objects.create(idProducto=producto, cantidad=cantidad_nueva)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+def actualizar_tipoproducto(request, id):
+    try:
+        tipoproducto = tipoProducto.objects.get(idTipoProducto=id)
+    except tipoProducto.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND, data={'message': 'Tipo de Producto no encontrado'})
+    
+    if request.method == 'PUT':
+        serializer = TipoProductoSerializer(tipoproducto, data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
 
 @api_view(['delete'])
 def eliminar_producto(request, id):
@@ -107,18 +162,28 @@ def eliminar_producto(request, id):
         
         return Response(status=status.HTTP_204_NO_CONTENT, data={'message': 'Producto eliminado'})
     
-@api_view(['PUT'])
-def actualizar_producto(request, id):
+@api_view(['delete'])
+def eliminar_tipoproducto(request, id):
     try:
-        producto = Producto.objects.get(idProducto=id)
-    except Producto.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND, data={'message': 'Producto no encontrado'})
-    
-    if request.method == 'PUT':
-        serializers = ProductoSerializer(producto, data=request.data)
+        tipoproducto = tipoProducto.objects.get(idTipoProducto=id)
         
-        if serializers.is_valid():
-            serializers.save()
-            return Response(serializers.data)
-        else:
-            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+    except tipoProducto.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND, data={'message': 'Tipo de Producto no encontrado'})
+    
+    if request.method == 'DELETE':
+        tipoproducto.delete()
+        
+        return Response(status=status.HTTP_204_NO_CONTENT, data={'message': 'Tipo de Producto eliminado'})
+
+@api_view(['delete'])
+def eliminar_stock(request, id):
+    try:
+        stock = stockProducto.objects.get(idStockProducto=id)
+        
+    except stockProducto.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND, data={'message': 'Stock de Producto no encontrado'})
+    
+    if request.method == 'DELETE':
+        stock.delete()
+        
+        return Response(status=status.HTTP_204_NO_CONTENT, data={'message': 'Stock de Producto eliminado'})
