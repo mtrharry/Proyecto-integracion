@@ -119,9 +119,9 @@ def actualizar_producto(request, id):
         if serializer.is_valid():
             serializer.save()
             # Actualizar el stock si la cantidad de stock se proporciona en la solicitud
-            cantidad_nueva = request.data.get('cantidadadstock')
+            cantidad_nueva = request.data.get('cantidadstock')
             if cantidad_nueva is not None:
-                stock_producto = producto.cantidadadstock
+                stock_producto = producto.cantidadstock
                 if stock_producto:
                     stock_producto.cantidad = cantidad_nueva
                     stock_producto.save()

@@ -7,7 +7,7 @@ from django.dispatch import receiver
 class Producto(models.Model):
     idProducto = models.AutoField(primary_key=True, verbose_name='Id de Producto')
     idTipoProducto = models.ForeignKey('tipoProducto', on_delete=models.PROTECT, verbose_name='Id de Tipo de Producto')
-    cantidadadstock = models.ForeignKey('stockProducto', on_delete=models.CASCADE , verbose_name='Cantidad en Stock', null=True,blank=True)
+    cantidadstock = models.ForeignKey('stockProducto', on_delete=models.CASCADE , verbose_name='Cantidad en Stock', null=True,blank=True)
 
     def __str__(self):
         return str(self.idTipoProducto.descripcionTipoProducto)
@@ -31,6 +31,6 @@ class stockProducto(models.Model):
 @receiver(post_save, sender=stockProducto)
 def actualizar_stock_producto(sender, instance, **kwargs):
     producto = instance.idProducto
-    producto.cantidadadstock = instance
+    producto.cantidadstock = instance
     producto.save()
 
