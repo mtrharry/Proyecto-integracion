@@ -1,4 +1,5 @@
 # En views.py
+
 from core.models import Producto, tipoProducto,stockProducto
 from rest_framework import serializers
 from rest_framework.decorators import api_view
@@ -7,6 +8,43 @@ from rest_framework.parsers import JSONParser
 from rest_api.serializers import ProductoSerializer, TipoProductoSerializer, stockProductoSerializer
 from rest_framework import status
 from rest_framework.exceptions import ParseError
+from django.shortcuts import render, redirect
+from requests import Response
+# views.py
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from transbank.webpay.webpay_plus.transaction import Transaction
+
+def payment_form(request):
+    return render(request, 'core/pago.html')
+
+class InitTransactionView(APIView):
+    def post(self, request):
+        buy_order = request.POST.get('buy_order')
+        session_id = request.POST.get('session_id')
+        amount = request.POST.get('amount')
+        return_url = 'http://127.0.0.1:8000/commit_transaction'
+
+        tx = Transaction()
+        response = tx.create(buy_order, session_id, amount, return_url)
+        
+        if response['token']:
+            return redirect(response['url'] + '?token_ws=' + response['token'])
+        return Response(response, status=status.HTTP_200_OK)
+
+from django.http import QueryDict
+
+@api_view(['GET'])  # Cambiado de POST a GET
+def commit_transaction(request):
+    # Obtén el token de los parámetros de consulta en lugar del cuerpo de la solicitud
+    token = request.GET.get('token_ws')
+
+    tx = Transaction()
+    response = tx.commit(token)
+
+    return Response(response, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
