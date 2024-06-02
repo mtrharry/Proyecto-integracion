@@ -1,0 +1,54 @@
+html{
+  background-image: url("../../media/img/fondo.jpg");
+}
+body {
+  margin: 0;
+  padding: 0;
+}
+.fondo {
+  width: 100%;
+  height: 6em; 
+  display: flex; 
+}
+.titulo{
+  position: absolute;
+  
+  margin-top: 1em;
+}
+.imgtitulo{
+  max-width: 200px;
+ 
+}
+
+.buscador{
+  display: flex;
+}
+
+.listanav{
+  text-align: end;
+  margin-right: 8em;
+  margin-top: -6em;
+}
+.listanav li{
+  margin: 1em;
+  list-style: none;
+  color: white;
+  display: inline-block;
+  
+}
+.menu-item {
+  display: inline-block; /* Hace que los elementos de la lista se alineen horizontalmente */
+  margin: 0 10px; /* Espaciado entre los elementos */
+  padding: 10px 20px; /* Espaciado interno del elemento */
+  border: 1px solid white; /* Color y grosor del borde */
+  border-radius: 5px; /* Bordes redondeados */
+  background-color: black; /* Fondo negro grisáceo */
+  color: white; /* Color del texto */
+  text-transform: uppercase; /* Texto en mayúsculas */
+  font-weight: bold; /* Texto en negrita */
+  transition: background-color 0.3s ease; /* Transición suave al cambiar el fondo */
+}
+
+.menu-item:hover {
+  background-color: rgba(46, 10, 10);
+}

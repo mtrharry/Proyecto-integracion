@@ -4,7 +4,7 @@ from rest_api.views import crear_producto,crear_tipoproducto,actualizar_producto
 from rest_api.views import eliminar_producto, eliminar_tipoproducto, eliminar_stock
 from rest_api.views import actualizar_producto,actualizar_tipoproducto
 from .views import payment_form, InitTransactionView, commit_transaction
-
+from .views import index
 urlpatterns = [
     path('productos/', lista_producto),
     path('productos/<int:id>/', obtener_producto),
@@ -28,4 +28,6 @@ urlpatterns = [
     path('payment_form/', payment_form, name='payment_form'),
     path('init_transaction/', InitTransactionView.as_view(), name='init_transaction'),
     path('commit_transaction/', commit_transaction, name='commit_transaction'),
+
+    path('', index, name='index'),
 ]

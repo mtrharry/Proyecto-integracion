@@ -17,6 +17,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from transbank.webpay.webpay_plus.transaction import Transaction
 
+def index(request):
+    return render(request, 'core/index.html')
+
 def payment_form(request):
     return render(request, 'core/pago.html')
 
