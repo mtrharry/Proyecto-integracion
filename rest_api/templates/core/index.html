@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    {%load static%}
 <head>
     <meta charset="UTF-8">
     <title>Carrito de Compras</title>
@@ -17,9 +18,9 @@
             <div class="listanav">
                 <ul>
                     <a href="../"><li class="menu-item">inicio</li></a>
-                    <a href="catalogo"><li class="menu-item">catalogo</li></a>
-                    <a href="nosotros"><li class="menu-item">nosotros</li></a>
-                    <a href="contactanos"><li class="menu-item">contactanos</li></a>
+                    <a href="{% url 'catalogo' %}"><li class="menu-item">catalogo</li></a>
+                    <a href="{% url 'nosotros' %}"><li class="menu-item">nosotros</li></a>
+                    <a href="{% url 'contactanos' %}"><li class="menu-item">contactanos</li></a>
                     <a href="#"><li class="menu-item">
                         <form class="buscador">
                             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -31,9 +32,14 @@
         </nav>
     </header>
 
-    <div id="productos-container" class="container mt-5">
-        <div class="row" id="productos">
-            <!-- Los productos se agregarán aquí -->
+    <div class="container mt-5">
+        <button id="to-pesos" class="btn btn-primary">Mostrar en Pesos</button>
+        <button id="to-dollars" class="btn btn-secondary">Mostrar en Dólares</button>
+
+        <div id="productos-container" class="container mt-5">
+            <div class="row" id="productos">
+                <!-- Los productos se agregarán aquí dinámicamente -->
+            </div>
         </div>
     </div>
 
@@ -49,11 +55,9 @@
         <div class="cart-total" id="cart-total">
             Total: $0
         </div>
-        <button id="pay-button" class="btn btn-success">Pagar</button>
+        <a href="{% url 'payment_form' %}"><button id="pay-button" class="btn btn-success">Pagar</button></a>
     </div>
-    
-
-    
 </body>
-<script src="../../static/js/index.js"></script>
+<script src="{% static '../../static/js/index.js' %}"></script>
+
 </html>

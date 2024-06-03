@@ -1,5 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
     let cart = [];
+    let dolar = 0;
+
+    // Fetch the dollar value from the JSON file
+    fetch('/static/js/dolar.json')
+        .then(response => response.json())
+        .then(data => {
+            dolar = data.dolar;
+        })
+        .catch(error => console.error('Error fetching dollar value:', error));
+
     const cartIcon = document.getElementById('cart-icon');
     const cartContainer = document.getElementById('cart-container');
     const cartItems = document.getElementById('cart-items');
@@ -41,12 +51,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const productosContainer = document.getElementById('productos');
             productos.forEach(producto => {
                 const productoCard = `
-                    <div class="col-md-4">
+                    <div class="col-md-4 product" data-price-pesos="${producto.precio}">
                         <div class="card mb-4 shadow-sm">
-                            
                             <div class="card-body">
                                 <h5 class="card-title">${producto.descripcionTipoProducto}</h5>
-                                <p class="card-text">$${producto.precio}</p>
+                                <p class="card-text">Precio: <span class="price">${producto.precio}</span> CLP</p>
                                 <input type="number" class="form-control quantity" min="1" value="1">
                                 <button class="btn btn-primary add-to-cart" data-id="${producto.idProducto}" data-name="${producto.descripcionTipoProducto}" data-price="${producto.precio}">Agregar</button>
                             </div>
@@ -87,6 +96,26 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('sessionID', sessionID);
         localStorage.setItem('totalAmount', totalAmount);
 
-        window.location.href = 'payment_form';
+        // Redirigir a payment_form después de guardar la información necesaria
+        window.location.href = '/payment_form';
     });
+
+    // Function to update prices in either Pesos or Dollars
+    function updatePrices(currency) {
+        const products = document.querySelectorAll('.product');
+        products.forEach(product => {
+            const priceElement = product.querySelector('.price');
+            const priceInPesos = parseFloat(product.getAttribute('data-price-pesos'));
+            if (currency === 'USD') {
+                const priceInDollars = priceInPesos / dolar;
+                priceElement.textContent = priceInDollars.toFixed(2) + ' USD';
+            } else {
+                priceElement.textContent = priceInPesos + ' CLP';
+            }
+        });
+    }
+
+    // Event listeners for currency change buttons
+    document.getElementById('to-pesos').addEventListener('click', () => updatePrices('CLP'));
+    document.getElementById('to-dollars').addEventListener('click', () => updatePrices('USD'));
 });

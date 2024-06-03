@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    {%load static%}
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,9 +19,9 @@
             <div class="listanav">
                 <ul>
                     <a href="../"><li class="menu-item">inicio</li></a>
-                    <a href="../catalogo"><li class="menu-item">catalogo</li></a>
-                    <a href=""><li class="menu-item">nosotros</li></a>
-                    <a href="../contactanos"><li class="menu-item">contactanos</li></a>
+                    <a href="{% url 'catalogo' %}"><li class="menu-item">catalogo</li></a>
+                    <a href="{% url 'nosotros' %}"><li class="menu-item">nosotros</li></a>
+                    <a href="{% url 'contactanos' %}"><li class="menu-item">contactanos</li></a>
                     <a href="#"><li class="menu-item">
                         <form class="buscador">
                             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
