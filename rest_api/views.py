@@ -17,12 +17,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from transbank.webpay.webpay_plus.transaction import Transaction
 
-def index(request):
-    return render(request, 'core/index.html')
-
-def payment_form(request):
-    return render(request, 'core/pago.html')
-
 class InitTransactionView(APIView):
     def post(self, request):
         buy_order = request.POST.get('buy_order')
@@ -228,3 +222,18 @@ def eliminar_stock(request, id):
         stock.delete()
         
         return Response(status=status.HTTP_204_NO_CONTENT, data={'message': 'Stock de Producto eliminado'})
+    
+def index(request):
+    return render(request, 'core/index.html')
+
+def payment_form(request):
+    return render(request, 'core/pago.html')
+
+def catalogo(request):
+    return render(request, 'core/catalogo.html')
+
+def contactanos(request):
+    return render(request, 'core/contactanos.html')
+
+def nosotros(request):
+    return render(request, 'core/nosotros.html')

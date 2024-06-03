@@ -8,7 +8,7 @@ class Producto(models.Model):
     idProducto = models.AutoField(primary_key=True, verbose_name='Id de Producto')
     idTipoProducto = models.ForeignKey('tipoProducto', on_delete=models.PROTECT, verbose_name='Id de Tipo de Producto')
     cantidadstock = models.ForeignKey('stockProducto', on_delete=models.CASCADE , verbose_name='Cantidad en Stock', null=True,blank=True)
-
+    precio = models.IntegerField(verbose_name='Precio de Producto')
     def __str__(self):
         return str(self.idTipoProducto.descripcionTipoProducto)
     

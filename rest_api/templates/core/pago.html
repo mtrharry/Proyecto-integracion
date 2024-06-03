@@ -2,24 +2,50 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Formulario de Pago</title>
+    <title>Confirmación de Pago</title>
 </head>
 <body>
-    <h1>Formulario de Pago</h1>
-    <form id="payment-form" method="POST" action="/init_transaction/">
-        <label for="buy_order">Orden de Compra:</label>
-        <input type="text" id="buy_order" name="buy_order" required><br>
+    <h1>Confirmación de Pago</h1>
+    <div id="order-summary">
+        <p>Orden de Compra: <span id="order-id"></span></p>
+        <p>ID de Sesión: <span id="session-id"></span></p>
+        <p>Monto Total: $<span id="total-amount"></span></p>
+    </div>
+    <h2>Formulario de Despacho</h2>
+    <form id="shipping-form" method="POST" action="/init_transaction/">
+        <input type="hidden" id="buy_order" name="buy_order">
+        <input type="hidden" id="session_id" name="session_id">
+        <input type="hidden" id="amount" name="amount">
         
-        <label for="session_id">ID de Sesión:</label>
-        <input type="text" id="session_id" name="session_id" required><br>
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" required><br>
         
-        <label for="amount">Monto:</label>
-        <input type="number" id="amount" name="amount" required><br>
+        <label for="address">Dirección:</label>
+        <input type="text" id="address" name="address" required><br>
         
+        <label for="city">Ciudad:</label>
+        <input type="text" id="city" name="city" required><br>
         
+        <label for="postal_code">Código Postal:</label>
+        <input type="text" id="postal_code" name="postal_code" required><br>
         
-        
-        <button type="submit">Iniciar Transacción</button>
+        <button type="submit">Confirmar y Pagar</button>
     </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const orderID = localStorage.getItem('orderID');
+            const sessionID = localStorage.getItem('sessionID');
+            const totalAmount = localStorage.getItem('totalAmount');
+
+            document.getElementById('order-id').innerText = orderID;
+            document.getElementById('session-id').innerText = sessionID;
+            document.getElementById('total-amount').innerText = totalAmount;
+
+            document.getElementById('buy_order').value = orderID;
+            document.getElementById('session_id').value = sessionID;
+            document.getElementById('amount').value = totalAmount;
+        });
+    </script>
 </body>
 </html>
