@@ -11,7 +11,7 @@ from rest_framework.exceptions import ParseError
 from django.shortcuts import render, redirect
 from requests import Response
 # views.py
-
+from django.urls import reverse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -22,7 +22,9 @@ class InitTransactionView(APIView):
         buy_order = request.POST.get('buy_order')
         session_id = request.POST.get('session_id')
         amount = request.POST.get('amount')
-        return_url = 'http://127.0.0.1:8000/commit_transaction'
+        BASE_URL = 'https://3wxnjnk9-8000.brs.devtunnels.ms/'
+        # Utiliza build_absolute_uri para obtener una URL absoluta
+        return_url = BASE_URL + reverse('commit_transaction')
 
         tx = Transaction()
         response = tx.create(buy_order, session_id, amount, return_url)
@@ -30,16 +32,19 @@ class InitTransactionView(APIView):
         if response['token']:
             return redirect(response['url'] + '?token_ws=' + response['token'])
         return Response(response, status=status.HTTP_200_OK)
-
+    
 from django.http import QueryDict
+def transaction_details(request):
+    return render(request, 'core/boleta.html')
 
-@api_view(['GET'])  # Cambiado de POST a GET
 def commit_transaction(request):
-    # Obtén el token de los parámetros de consulta en lugar del cuerpo de la solicitud
     token = request.GET.get('token_ws')
-
     tx = Transaction()
     response = tx.commit(token)
+
+    if response:
+        query_params = f"?token_ws={token}&vci={response['vci']}&amount={response['amount']}&status={response['status']}&buy_order={response['buy_order']}&session_id={response['session_id']}&card_number={response['card_detail']['card_number']}&accounting_date={response['accounting_date']}&transaction_date={response['transaction_date']}&authorization_code={response['authorization_code']}&payment_type_code={response['payment_type_code']}&response_code={response['response_code']}&installments_number={response['installments_number']}"
+        return redirect(reverse('transaction_details') + query_params)
 
     return Response(response, status=status.HTTP_200_OK)
 

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles de la Transacción</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Detalles de la Transacción</h1>
+        <p><strong>Últimos 4 dígitos de la tarjeta:</strong> <span id="card-number"></span></p>
+        <p><strong>Estado de la transacción:</strong> <span id="status"></span></p>
+        <p><strong>Monto:</strong> $<span id="amount"></span></p>
+        <p><strong>Fecha de la transacción:</strong> <span id="transaction-date"></span></p>
+        <p><strong>Orden de compra:</strong> <span id="buy-order"></span></p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Obtener parámetros de la URL
+            const params = new URLSearchParams(window.location.search);
+
+            // Datos simulados de la transacción (para pruebas)
+            const transactionData = {
+                vci: params.get('vci') || "TSY",
+                amount: params.get('amount') || 20000,
+                status: params.get('status') || "AUTHORIZED",
+                buy_order: params.get('buy_order') || "ORD347557",
+                session_id: params.get('session_id') || "SES568609",
+                card_detail: {
+                    card_number: params.get('card_number') || "7763"
+                },
+                accounting_date: params.get('accounting_date') || "0604",
+                transaction_date: params.get('transaction_date') || "2024-06-04T20:16:46.576Z",
+                authorization_code: params.get('authorization_code') || "1415",
+                payment_type_code: params.get('payment_type_code') || "VD",
+                response_code: params.get('response_code') || 0,
+                installments_number: params.get('installments_number') || 0
+            };
+
+            // Actualizar el contenido de la página con los datos de la transacción
+            document.getElementById('card-number').innerText = transactionData.card_detail.card_number;
+            document.getElementById('status').innerText = transactionData.status === "AUTHORIZED" ? "Autorizada" : "Fallida";
+            document.getElementById('amount').innerText = transactionData.amount;
+            document.getElementById('transaction-date').innerText = new Date(transactionData.transaction_date).toLocaleString();
+            document.getElementById('buy-order').innerText = transactionData.buy_order;
+        });
+    </script>
+</body>
+</html>
