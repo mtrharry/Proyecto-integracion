@@ -1,12 +1,21 @@
 import json
 from urllib.request import urlopen
-from datetime import datetime
+from datetime import datetime,timedelta
 import os
 
-# Obtener la fecha actual
-current_date = datetime.now().strftime('%Y-%m-%d')
 
-url = f'https://si3.bcentral.cl/SieteRestWS/SieteRestWS.ashx?user=ha.ruiz@duocuc.cl&pass=Ruizharry32.&function=GetSeries&timeseries=F073.TCO.PRE.Z.D&firstdate={current_date}&lastdate={current_date}'
+# Obtener la fecha actual
+import json
+from urllib.request import urlopen
+from datetime import datetime
+
+# Obtener la fecha actual
+current_date = datetime.now()
+
+# Formatear la fecha a string
+current_date_str = current_date.strftime('%Y-%m-%d')
+
+url = f'https://si3.bcentral.cl/SieteRestWS/SieteRestWS.ashx?user=ha.ruiz@duocuc.cl&pass=Ruizharry32.&function=GetSeries&timeseries=F073.TCO.PRE.Z.D&firstdate={current_date_str}&lastdate={current_date_str}'
 
 response = urlopen(url)
 data_bytes = response.read()

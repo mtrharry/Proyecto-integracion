@@ -1,5 +1,4 @@
 # En views.py
-
 from core.models import Producto, tipoProducto,stockProducto
 from rest_framework import serializers
 from rest_framework.decorators import api_view
@@ -22,10 +21,10 @@ class InitTransactionView(APIView):
         buy_order = request.POST.get('buy_order')
         session_id = request.POST.get('session_id')
         amount = request.POST.get('amount')
-        BASE_URL = 'https://3wxnjnk9-8000.brs.devtunnels.ms/'
-        # Utiliza build_absolute_uri para obtener una URL absoluta
-        return_url = BASE_URL + reverse('commit_transaction')
-
+        # Utiliza la URL de tu túnel de desarrollo para la URL de retorno
+        return_url = 'https://7ffnhd7n-8000.brs.devtunnels.ms/' + reverse('commit_transaction')
+        #return_url = 'http://127.0.0.1:8000/commit_transaction'
+    
         tx = Transaction()
         response = tx.create(buy_order, session_id, amount, return_url)
         
