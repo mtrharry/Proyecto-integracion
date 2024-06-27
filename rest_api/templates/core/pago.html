@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-    {%load static%}
+    {% load static %}
 <head>
     <meta charset="UTF-8">
     <title>Confirmación de Pago</title>
-    
-    <link rel="stylesheet" href="../../static/css/pago.css">
+    <link rel="stylesheet" href="{% static 'css/pago.css' %}">
 </head>
 <body>
     <div class="container">
@@ -17,6 +16,7 @@
         </div>
         <h2>Formulario de Despacho</h2>
         <form id="shipping-form" method="POST" action="/init_transaction/">
+            {% csrf_token %}
             <input type="hidden" id="buy_order" name="buy_order">
             <input type="hidden" id="session_id" name="session_id">
             <input type="hidden" id="amount" name="amount">
@@ -36,7 +36,6 @@
             <button type="submit">Confirmar y Pagar</button>
         </form>
     </div>
-
 </body>
-<script src='../../static/js/pago.js'></script>
+<script src="{% static 'js/pago.js' %}"></script>
 </html>

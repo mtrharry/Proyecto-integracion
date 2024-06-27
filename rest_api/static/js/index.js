@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             dolar = data.dolar;
+            // Actualizar los precios a dólares una vez que se obtiene el valor del dólar
+            updatePrices('USD');
         })
         .catch(error => console.error('Error fetching dollar value:', error));
 
@@ -117,5 +119,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Event listeners for currency change buttons
     document.getElementById('to-pesos').addEventListener('click', () => updatePrices('CLP'));
-    document.getElementById('to-dollars').addEventListener('click', () => updatePrices('USD'));
+    document.getElementById('to-dollars').addEventListener('click', () => {
+        if (dolar > 0) {
+            updatePrices('USD');
+        } else {
+            console.error('El valor del dólar no se ha cargado todavía.');
+        }
+    });
 });
