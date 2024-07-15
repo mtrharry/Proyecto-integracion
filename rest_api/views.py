@@ -16,14 +16,16 @@ from rest_framework.response import Response
 from rest_framework import status
 from transbank.webpay.webpay_plus.transaction import Transaction
 
+
+
 class InitTransactionView(APIView):
     def post(self, request):
         buy_order = request.POST.get('buy_order')
         session_id = request.POST.get('session_id')
         amount = request.POST.get('amount')
         # Utiliza la URL de tu túnel de desarrollo para la URL de retorno
-        return_url = 'https://3wxnjnk9-8000.brs.devtunnels.ms/' + reverse('commit_transaction')
-        #return_url = 'http://127.0.0.1:8000/commit_transaction'
+        #return_url = 'https://3wxnjnk9-8000.brs.devtunnels.ms/' + reverse('commit_transaction')
+        return_url = 'http://127.0.0.1:8000/commit_transaction'
     
         tx = Transaction()
         response = tx.create(buy_order, session_id, amount, return_url)

@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             dolar = data.dolar;
+            console.log("Valor del dólar cargado: ", dolar);
             // Actualizar los precios a dólares una vez que se obtiene el valor del dólar
             updatePrices('USD');
         })

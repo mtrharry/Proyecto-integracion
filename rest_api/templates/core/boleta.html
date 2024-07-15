@@ -32,6 +32,7 @@
         <p><strong>Monto:</strong> $<span id="amount"></span></p>
         <p><strong>Fecha de la transacción:</strong> <span id="transaction-date"></span></p>
         <p><strong>Orden de compra:</strong> <span id="buy-order"></span></p>
+        <a href = "{% url 'index' %}";>Volver al Inicio </a>
     </div>
 
     <script>
@@ -64,6 +65,8 @@
             document.getElementById('transaction-date').innerText = new Date(transactionData.transaction_date).toLocaleString();
             document.getElementById('buy-order').innerText = transactionData.buy_order;
         });
+       
     </script>
+    
 </body>
 </html>
